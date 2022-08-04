@@ -18,8 +18,8 @@ export const submitReview = async (req: Request, res: Response) => {
         appraise: 'false',
         employeeId: uid,
         objectiveType: data.type,
-        developmentObjective: data.type === 'development goals' ? data : null,
-        performanceObjective: data.type === 'performance goals' ? data : null,
+        developmentObjective: data.type === 'development goal' ? data : null,
+        performanceObjective: data.type === 'performance goal' ? data : null,
       });
       const createReview = await newReview.save();
 
