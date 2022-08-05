@@ -20,3 +20,13 @@ export const getManager = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const getManagerProfile = async (req: Request, res: Response) => {
+  const { uid } = req.headers;
+
+  const currentManager = await Manager.findOne({ _id: uid });
+
+  if (currentManager) {
+    res.status(200).json({ status: 'success', data: currentManager });
+  }
+};

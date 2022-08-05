@@ -20,3 +20,13 @@ export const getUser = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const getProfile = async (req: Request, res: Response) => {
+  const { uid } = req.headers;
+
+  const currentUser = await User.findOne({ _id: uid });
+
+  if (currentUser) {
+    res.status(200).json({ status: 'success', data: currentUser });
+  }
+};

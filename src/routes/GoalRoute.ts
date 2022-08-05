@@ -1,4 +1,5 @@
 import express from 'express';
+import { getFeedback } from '../controllers/goal/GetFeedback';
 import { getGoal } from '../controllers/goal/GetGoal';
 import { submitReview } from '../controllers/goal/Submit_Review';
 import { completeObjective } from '../controllers/goal/UpdateGoal';
@@ -18,5 +19,7 @@ router.post('/complete_goal', completeObjective);
 router.post('/submit_review', submitReview);
 
 router.get('/get_goals', getGoal);
+
+router.get('/get_feedback', getFeedback);
 
 export default router;
