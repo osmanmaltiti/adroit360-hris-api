@@ -6,6 +6,7 @@ import managerRoute from './routes/ManagerRoute';
 import userRoute from './routes/UserRoute';
 
 const app: Application = express();
+const port: number = 5000;
 
 mongoose.connect('mongodb://localhost:27017/hrisDB');
 
@@ -16,4 +17,4 @@ app.use('/api/v1/user', userRoute);
 app.use('/api/v1/manager', managerRoute);
 app.use('/api/v1/goal', goalRoute);
 
-app.listen(5000, () => console.log('Server is listening to port 5000'));
+app.listen(port, () => console.log(`Server is listening on port ${port}`));
