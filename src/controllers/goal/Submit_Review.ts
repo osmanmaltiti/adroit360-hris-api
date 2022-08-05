@@ -21,7 +21,32 @@ export const submitReview = async (req: Request, res: Response) => {
         developmentObjective: data.type === 'development goal' ? data : null,
         performanceObjective: data.type === 'performance goal' ? data : null,
       });
-      const createReview = await newReview.save();
+
+      await newReview.save();
+
+      User.findOne({ _id: uid }, {}, async (err, results) => {
+        if (results) {
+          if (data.type === 'development goal') {
+            const removeTarget = results.developmentgoals.filter(
+              (item) => item._id != data._id
+            );
+
+            await User.updateOne(
+              { _id: uid },
+              { developmentgoals: [...removeTarget] }
+            );
+          } else {
+            const removeTarget = results.performancegoals.filter(
+              (item) => item._id != data._id
+            );
+
+            await User.updateOne(
+              { _id: uid },
+              { performancegoals: [...removeTarget] }
+            );
+          }
+        }
+      });
     }
   });
 };
