@@ -7,8 +7,6 @@ const DevelopmentGoalSchema = new mongoose.Schema({
     support: { status: String, data: [String] },
     activity: { status: String, data: [String] },
     comments: { status: String, data: [String] },
-    score: Number,
-    rating: Number,
   },
 });
 
@@ -18,8 +16,6 @@ const PerformanceGoalSchema = new mongoose.Schema({
     performance: { status: String, data: [String] },
     measures: { status: String, data: [String] },
     comments: { status: String, data: [String] },
-    score: Number,
-    rating: Number,
   },
 });
 
