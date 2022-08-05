@@ -19,7 +19,7 @@ export const authenticate = (
         if (decode) {
           const { role } = decode as { email: string; role: string };
 
-          if (role === 'employee') {
+          if (role === 'Employee') {
             next();
           }
         } else {

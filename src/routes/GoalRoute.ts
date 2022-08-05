@@ -1,8 +1,8 @@
 import express from 'express';
 import { getFeedback } from '../controllers/goal/GetFeedback';
 import { getGoal } from '../controllers/goal/GetGoal';
-import { submitReview } from '../controllers/goal/Submit_Review';
 import { completeObjective } from '../controllers/goal/UpdateGoal';
+import { submitReview } from '../controllers/user/Submit_Review';
 import { authenticate } from '../middleware/VerifyToken';
 import {
   createDevelopmentGoal,
