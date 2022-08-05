@@ -58,7 +58,6 @@ const ManagerSchema = new mongoose.Schema({
   password: String,
   role: String,
   employees: [UserSchema],
-  pending: [ReviewSchema],
   history: [ReviewSchema],
 });
 

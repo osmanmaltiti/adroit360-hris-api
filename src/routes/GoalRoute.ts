@@ -3,6 +3,7 @@ import { getFeedback } from '../controllers/goal/GetFeedback';
 import { getGoal } from '../controllers/goal/GetGoal';
 import { submitReview } from '../controllers/goal/Submit_Review';
 import { completeObjective } from '../controllers/goal/UpdateGoal';
+import { authenticate } from '../middleware/VerifyToken';
 import {
   createDevelopmentGoal,
   createPerformanceGoal,
@@ -10,16 +11,16 @@ import {
 
 const router = express.Router();
 
-router.post('/create_development_goal', createDevelopmentGoal);
+router.post('/create_development_goal', authenticate, createDevelopmentGoal);
 
-router.post('/create_performance_goal', createPerformanceGoal);
+router.post('/create_performance_goal', authenticate, createPerformanceGoal);
 
-router.post('/complete_goal', completeObjective);
+router.post('/complete_goal', authenticate, completeObjective);
 
-router.post('/submit_review', submitReview);
+router.post('/submit_review', authenticate, submitReview);
 
-router.get('/get_goals', getGoal);
+router.get('/get_goals', authenticate, getGoal);
 
-router.get('/get_feedback', getFeedback);
+router.get('/get_feedback', authenticate, getFeedback);
 
 export default router;

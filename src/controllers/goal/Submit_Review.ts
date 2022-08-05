@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Manager, Review, User } from '../../schema/DBSchema';
+import { Review, User } from '../../schema/DBSchema';
 
 export const submitReview = async (req: Request, res: Response) => {
   const { data } = req.body;
@@ -22,21 +22,6 @@ export const submitReview = async (req: Request, res: Response) => {
         performanceObjective: data.type === 'performance goal' ? data : null,
       });
       const createReview = await newReview.save();
-
-      Manager.findOne({ _id: managerId }, {}, async (err, results) => {
-        if (err) res.status(400).json({ status: 'failed', message: 'error' });
-
-        if (results) {
-          const { pending } = results;
-
-          const updateReview = await Manager.updateOne(
-            { _id: managerId },
-            { pending: [...pending, createReview] }
-          );
-
-          res.status(200).json({ status: 'success', data: updateReview });
-        }
-      });
     }
   });
 };
