@@ -31,19 +31,23 @@ export const submitReview = async (req: Request, res: Response) => {
               (item) => item._id != data._id
             );
 
-            await User.updateOne(
+            const ack = await User.updateOne(
               { _id: uid },
               { developmentgoals: [...removeTarget] }
             );
+
+            res.status(200).json({ status: 'success', data: ack.acknowledged });
           } else {
             const removeTarget = results.performancegoals.filter(
               (item) => item._id != data._id
             );
 
-            await User.updateOne(
+            const ack = await User.updateOne(
               { _id: uid },
               { performancegoals: [...removeTarget] }
             );
+
+            res.status(200).json({ status: 'success', data: ack.acknowledged });
           }
         }
       });
