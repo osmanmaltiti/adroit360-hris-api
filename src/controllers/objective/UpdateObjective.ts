@@ -7,7 +7,7 @@ export const completeObjective = async (req: Request, res: Response) => {
 
   User.findOne({ _id: uid }, {}, async (err, results) => {
     if (err) {
-      res.status(400).json({ status: 'failed', data: 'Error' });
+      res.status(400).json({ status: 'failed', message: err.message });
     } else {
       if (results) {
         const { developmentgoals, performancegoals } = results;

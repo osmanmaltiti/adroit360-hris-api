@@ -1,11 +1,10 @@
 import express from 'express';
-import { appraiseReview } from '../controllers/manager/AppraiseReview';
-import { createManager } from '../controllers/manager/CreateManager';
 import {
+  createManager,
   getManager,
   getManagerProfile,
-} from '../controllers/manager/GetManager';
-import { getReviews } from '../controllers/manager/GetReviews';
+} from '../controllers/manager/Manager';
+import { appraiseReview, getReviews } from '../controllers/manager/Review';
 import { authenticateManager } from '../middleware/VerifyToken';
 
 const router = express.Router();
