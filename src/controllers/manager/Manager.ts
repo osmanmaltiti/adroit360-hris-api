@@ -1,18 +1,21 @@
 import { Request, Response } from 'express';
 import { MongooseError } from 'mongoose';
 import { createToken } from '../../helpers/CreateToken';
+import { comparePassword, encryptPassword } from '../../helpers/Encyption';
 import { Manager } from '../../schema/DBSchema';
 
 export const createManager = async (req: Request, res: Response) => {
   const { email, fullname, password, role } = req.body;
 
   if (email && password) {
+    const hashPassword = encryptPassword(password);
+
     try {
       const newManager = new Manager({
+        role,
         email,
         fullname,
-        password,
-        role,
+        password: hashPassword,
       });
 
       const createdManager = await newManager.save();
@@ -21,6 +24,7 @@ export const createManager = async (req: Request, res: Response) => {
         createdManager.email,
         createdManager.role
       );
+
       res
         .status(200)
         .json({ status: 'success', data: { uid: createdManager._id, token } });
@@ -38,7 +42,9 @@ export const getManager = async (req: Request, res: Response) => {
     const currentUser = await Manager.findOne({ email });
 
     if (currentUser) {
-      if (password === currentUser.password) {
+      const verifyPassword = comparePassword(password, currentUser.password);
+
+      if (verifyPassword) {
         const token = await createToken(currentUser.email, currentUser.role);
         res
           .status(200)

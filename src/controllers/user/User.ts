@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { MongooseError } from 'mongoose';
 import { createToken } from '../../helpers/CreateToken';
+import { comparePassword, encryptPassword } from '../../helpers/Encyption';
 import { Manager, User } from '../../schema/DBSchema';
 
 export const createUser = async (req: Request, res: Response) => {
@@ -8,6 +9,8 @@ export const createUser = async (req: Request, res: Response) => {
   const { uid } = req.headers;
 
   if (email && password) {
+    const hashPassword = encryptPassword(password);
+
     Manager.findOne({ _id: uid }, {}, async (err, results) => {
       if (err) {
         res.status(400).json({ status: 'failed', message: 'Error' });
@@ -16,11 +19,11 @@ export const createUser = async (req: Request, res: Response) => {
           const { employees } = results;
 
           const newUser = new User({
+            role,
             email,
             fullname,
-            password,
-            role,
             managerId: uid,
+            password: hashPassword,
             manager: results.fullname,
           });
 
@@ -45,7 +48,12 @@ export const getUser = async (req: Request, res: Response) => {
 
   try {
     if (currentUser) {
-      if (password === currentUser.password) {
+      const verifyPassword = comparePassword(
+        password,
+        String(currentUser.password)
+      );
+
+      if (verifyPassword) {
         const token = await createToken(currentUser.email, currentUser.role);
         res
           .status(200)
