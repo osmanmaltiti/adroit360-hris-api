@@ -42,7 +42,10 @@ export const getManager = async (req: Request, res: Response) => {
     const currentUser = await Manager.findOne({ email });
 
     if (currentUser) {
-      const verifyPassword = comparePassword(password, currentUser.password);
+      const verifyPassword = comparePassword(
+        password,
+        String(currentUser.password)
+      );
 
       if (verifyPassword) {
         const token = await createToken(currentUser.email, currentUser.role);
@@ -65,10 +68,22 @@ export const getManager = async (req: Request, res: Response) => {
 export const getManagerProfile = async (req: Request, res: Response) => {
   const { uid } = req.headers;
   try {
-    const currentManager = await Manager.findOne({ _id: uid });
+    const currentManager = await Manager.findOne({ _id: uid }).select({
+      role: true,
+      history: true,
+      fullname: true,
+      employees: true,
+    });
 
     if (currentManager) {
-      res.status(200).json({ status: 'success', data: currentManager });
+      const managerData = {
+        role: currentManager.role,
+        history: currentManager.history,
+        fullname: currentManager.fullname,
+        employees: currentManager.employees,
+      };
+
+      res.status(200).json({ status: 'success', data: managerData });
     }
   } catch (error) {
     if (error instanceof MongooseError) {

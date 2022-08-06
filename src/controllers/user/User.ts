@@ -74,11 +74,27 @@ export const getUser = async (req: Request, res: Response) => {
 export const getProfile = async (req: Request, res: Response) => {
   const { uid } = req.headers;
 
-  const currentUser = await User.findOne({ _id: uid });
-
   try {
+    const currentUser = await User.findOne({ _id: uid }).select({
+      role: true,
+      manager: true,
+      fullname: true,
+      managerId: true,
+      developmentgoals: true,
+      performancegoals: true,
+    });
+
     if (currentUser) {
-      res.status(200).json({ status: 'success', data: currentUser });
+      const userData = {
+        role: currentUser.role,
+        manager: currentUser.manager,
+        fullname: currentUser.fullname,
+        managerId: currentUser.managerId,
+        developmentgoals: currentUser.developmentgoals,
+        performancegoals: currentUser.performancegoals,
+      };
+
+      res.status(200).json({ status: 'success', data: userData });
     }
   } catch (error) {
     if (error instanceof MongooseError) {

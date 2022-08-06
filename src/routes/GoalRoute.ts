@@ -3,8 +3,7 @@ import {
   createDevelopmentGoal,
   createPerformanceGoal,
 } from '../controllers/objective/CreateObjective';
-import { getFeedback } from '../controllers/objective/GetFeedback';
-import { getGoal } from '../controllers/objective/GetObjective';
+import { getFeedback, getGoal } from '../controllers/objective/GetObjective';
 import { completeObjective } from '../controllers/objective/UpdateObjective';
 import { submitReview } from '../controllers/user/Review';
 import { authenticate } from '../middleware/VerifyToken';
