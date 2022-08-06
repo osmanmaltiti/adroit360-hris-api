@@ -44,9 +44,9 @@ export const createUser = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  const currentUser = await User.findOne({ email });
-
   try {
+    const currentUser = await User.findOne({ email });
+
     if (currentUser) {
       const verifyPassword = comparePassword(
         password,
