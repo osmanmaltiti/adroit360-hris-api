@@ -17,24 +17,29 @@ export const createUser = async (req: Request, res: Response) => {
       } else {
         if (results) {
           const { employees } = results;
+          try {
+            const newUser = new User({
+              role,
+              email,
+              fullname,
+              managerId: uid,
+              password: hashPassword,
+              manager: results.fullname,
+            });
 
-          const newUser = new User({
-            role,
-            email,
-            fullname,
-            managerId: uid,
-            password: hashPassword,
-            manager: results.fullname,
-          });
+            const createdUser = await newUser.save();
 
-          const createdUser = await newUser.save();
+            await Manager.updateOne(
+              { _id: uid },
+              { employees: [...employees, createdUser] }
+            );
 
-          await Manager.updateOne(
-            { _id: uid },
-            { employees: [...employees, createdUser] }
-          );
-
-          res.status(200).json({ status: 'success' });
+            res.status(200).json({ status: 'success' });
+          } catch (error) {
+            res
+              .status(400)
+              .json({ status: 'failed', message: 'email already exists' });
+          }
         }
       }
     });
@@ -60,13 +65,17 @@ export const getUser = async (req: Request, res: Response) => {
           .json({ status: 'success', data: { uid: currentUser._id, token } });
       } else {
         res
-          .status(400)
+          .status(401)
           .send({ status: 'failed', message: 'invalid username or password' });
       }
+    } else {
+      res
+        .status(401)
+        .send({ status: 'failed', message: 'invalid username or password' });
     }
   } catch (error) {
     if (error instanceof MongooseError) {
-      res.status(400).send({ status: 'failed', message: error.message });
+      res.status(401).send({ status: 'failed', message: error.message });
     }
   }
 };
