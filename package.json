@@ -4,8 +4,8 @@
   "description": "Server for HRIS",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node-dev ./src/index.ts",
-    "start:prod": "node build/index.js"
+    "start:dev": "ts-node-dev ./src/index.ts",
+    "start": "node build/index.js"
   },
   "author": "Maltiti",
   "license": "ISC",
