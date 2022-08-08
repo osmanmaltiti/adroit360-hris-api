@@ -12,21 +12,26 @@ export const authenticate = (
     const bearerToken = authorization.split(' ');
     const [_, token] = bearerToken;
 
-    jwt.verify(token, 'hrisAccessToken', {}, async (err, decode) => {
-      if (err) {
-        res.status(401).json({ status: 'Failed', message: 'Unauthorized' });
-      } else {
-        if (decode) {
-          const { role } = decode as { email: string; role: string };
-
-          if (role === 'Employee') {
-            next();
-          }
-        } else {
+    jwt.verify(
+      token,
+      String(process.env.ACCESSTOKENLOCK),
+      {},
+      async (err, decode) => {
+        if (err) {
           res.status(401).json({ status: 'Failed', message: 'Unauthorized' });
+        } else {
+          if (decode) {
+            const { role } = decode as { email: string; role: string };
+
+            if (role === 'Employee') {
+              next();
+            }
+          } else {
+            res.status(401).json({ status: 'Failed', message: 'Unauthorized' });
+          }
         }
       }
-    });
+    );
   } else {
     res.status(401).json({ status: 'Failed', message: 'Unauthorized' });
   }
@@ -43,21 +48,26 @@ export const authenticateManager = (
     const bearerToken = authorization.split(' ');
     const [_, token] = bearerToken;
 
-    jwt.verify(token, 'hrisAccessToken', {}, async (err, decode) => {
-      if (err) {
-        res.status(401).json({ status: 'Failed', message: 'Unauthorized' });
-      } else {
-        if (decode) {
-          const { role } = decode as { email: string; role: string };
-
-          if (role === 'manager') {
-            next();
-          }
-        } else {
+    jwt.verify(
+      token,
+      String(process.env.ACCESSTOKENLOCK),
+      {},
+      async (err, decode) => {
+        if (err) {
           res.status(401).json({ status: 'Failed', message: 'Unauthorized' });
+        } else {
+          if (decode) {
+            const { role } = decode as { email: string; role: string };
+
+            if (role === 'manager') {
+              next();
+            }
+          } else {
+            res.status(401).json({ status: 'Failed', message: 'Unauthorized' });
+          }
         }
       }
-    });
+    );
   } else {
     res.status(401).json({ status: 'Failed', message: 'Unauthorized' });
   }
