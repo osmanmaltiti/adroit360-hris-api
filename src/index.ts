@@ -14,8 +14,7 @@ const port: number = Number(process.env.PORT) || 8080;
 const app: Application = express();
 
 mongoose.connect(
-  String(process.env.MONGOCLIENT_PRODUCTION) ||
-    String(process.env.MONGOCLIENT_LOCAL)
+  String(process.env.MONGOCLIENT_PRODUCTION)
 );
 
 app.use(cors());

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { MongooseError } from 'mongoose';
 import { createToken } from '../../helpers/CreateToken';
-import { comparePassword, encryptPassword } from '../../helpers/Encyption';
+import { comparePassword, encryptPassword } from '../../helpers/Encryption';
 import { Manager, User } from '../../schema/DBSchema';
 
 export const createUser = async (req: Request, res: Response) => {
